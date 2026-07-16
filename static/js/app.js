@@ -23,11 +23,11 @@ document.querySelectorAll('.nav-item').forEach(item => {
 // ========== SSE 工具函数 ==========
 function connectSSE(endpoint, onProgress, onDelta, onFinal, onError) {
     const evtSource = new EventSource(endpoint);
-    evtSource.addEventListener('progress', e => onProgress(JSON.parse(e.data)));
-    evtSource.addEventListener('delta', e => onDelta(JSON.parse(e.data)));
-    evtSource.addEventListener('final', e => { onFinal(JSON.parse(e.data)); evtSource.close(); });
-    evtSource.addEventListener('error', e => { onError(JSON.parse(e.data)); evtSource.close(); });
-    evtSource.onerror = () => { evtSource.close(); };
+    evtSource.addEventListener('progress', e => { if (onProgress) onProgress(JSON.parse(e.data)); });
+    evtSource.addEventListener('delta', e => { if (onDelta) onDelta(JSON.parse(e.data)); });
+    evtSource.addEventListener('final', e => { if (onFinal) onFinal(JSON.parse(e.data)); evtSource.close(); });
+    evtSource.addEventListener('error', e => { if (onError) onError(JSON.parse(e.data)); evtSource.close(); });
+    evtSource.onerror = () => { if (onError) onError({ message: 'Connection failed' }); evtSource.close(); };
     return evtSource;
 }
 
@@ -192,6 +192,12 @@ async function completeTraining(userId) {
 
 // ========== Chat ==========
 let chatBuffer = '';
+document.getElementById('onboard-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter') document.getElementById('onboard-send').click();
+});
+document.getElementById('chat-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter') document.getElementById('chat-send').click();
+});
 document.getElementById('chat-send').addEventListener('click', async () => {
     const input = document.getElementById('chat-input');
     const msg = input.value.trim();
