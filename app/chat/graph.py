@@ -5,6 +5,7 @@ from app.core.prompt_loader import load_prompt_or_default
 from app.tools.exercise_search import search_exercises_semantic
 from app.utils.sse_utils import push_delta, push_final, push_error
 from loguru import logger
+import time
 
 CHAT_PROMPT = load_prompt_or_default(
     "chat",
@@ -28,13 +29,14 @@ def retrieve_node(state: QAState) -> dict:
     question = state["question"]
     docs = search_exercises_semantic(question, top_k=3)
     context = "\n\n".join([
-        f"动作: {d['name_cn']}({d['name']})\n目标肌群: {', '.join(d.get('primary_muscles', []))}\n{d.get('text', '')}"
+        f"动作: {d['name_cn']}({d['name']})\n目标肌群: {', '.join(d.get('primary_muscles') or [])}\n{d.get('text', '')}"
         for d in docs
     ])
     return {"retrieved_docs": docs, "context": context or "无相关知识"}
 
 
 def answer_node(state: QAState) -> dict:
+    content = ""
     try:
         prompt = CHAT_PROMPT.format(
             context=state["context"],
@@ -43,7 +45,6 @@ def answer_node(state: QAState) -> dict:
         response = llm.invoke([{"role": "user", "content": prompt}])
         content = response.content
 
-        import time
         for i in range(0, len(content), 20):
             push_delta(state["session_id"], content[i : i + 20])
             time.sleep(0.02)
