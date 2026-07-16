@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fitness Agent - AI 健身教练</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+    <div id="app">
+        <!-- 侧边导航 -->
+        <nav id="sidebar">
+            <div class="logo">🏋️ Fitness Agent</div>
+            <ul class="nav-items">
+                <li class="nav-item active" data-page="onboarding">🎯 新手引导</li>
+                <li class="nav-item" data-page="plan">📋 我的计划</li>
+                <li class="nav-item" data-page="training">💪 今日训练</li>
+                <li class="nav-item" data-page="chat">💬 健身问答</li>
+            </ul>
+            <div class="nav-footer">
+                <span id="user-id-display">未登录</span>
+            </div>
+        </nav>
+
+        <!-- 主内容区 -->
+        <main id="main-content">
+            <!-- 引导页 -->
+            <section id="page-onboarding" class="page active">
+                <h2>🎯 新手引导</h2>
+                <div class="chat-container">
+                    <div id="onboard-messages" class="chat-messages"></div>
+                    <div class="chat-input-area">
+                        <input type="text" id="onboard-input" placeholder="输入你的回答..." />
+                        <button id="onboard-send">发送</button>
+                    </div>
+                    <button id="onboard-start" class="btn-primary">开始对话</button>
+                </div>
+            </section>
+
+            <!-- 计划页 -->
+            <section id="page-plan" class="page">
+                <h2>📋 我的训练计划</h2>
+                <div id="plan-content">
+                    <button id="plan-generate" class="btn-primary">生成新计划</button>
+                    <div id="plan-display"></div>
+                    <div id="plan-progress" class="progress-area" style="display:none;"></div>
+                </div>
+            </section>
+
+            <!-- 训练页 -->
+            <section id="page-training" class="page">
+                <h2>💪 今日训练</h2>
+                <div id="training-content">
+                    <button id="training-load" class="btn-primary">加载今日训练</button>
+                    <div id="training-display"></div>
+                </div>
+            </section>
+
+            <!-- 聊天页 -->
+            <section id="page-chat" class="page">
+                <h2>💬 健身问答</h2>
+                <div class="chat-container">
+                    <div id="chat-messages" class="chat-messages"></div>
+                    <div class="chat-input-area">
+                        <input type="text" id="chat-input" placeholder="问任何健身问题..." />
+                        <button id="chat-send">发送</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
