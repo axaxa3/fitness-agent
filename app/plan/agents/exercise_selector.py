@@ -2,7 +2,7 @@ import json
 from app.core.llm_factory import create_llm
 from app.utils.sse_utils import push_progress
 from app.data.exercise_library import list_all_exercises
-from app.tools.exercise_search import search_exercises_semantic
+
 
 
 def select_exercises(split: dict, user_profile: dict, session_id: str) -> dict:

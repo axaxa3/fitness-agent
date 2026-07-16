@@ -8,7 +8,7 @@ from app.plan.graph import plan_graph
 from app.plan.state import PlanState
 from app.data.user_profile import get_profile
 from app.data.training_log import get_active_plan
-from app.utils.sse_utils import SessionManager, push_error
+from app.utils.sse_utils import SessionManager
 
 router = APIRouter(prefix="/api/plan", tags=["plan"])
 

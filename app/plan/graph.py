@@ -6,7 +6,7 @@ from app.plan.agents.volume_planner import plan_volume
 from app.plan.agents.safety_checker import safety_check
 from app.plan.supervisor import synthesize_plan
 from app.data.training_log import create_plan, deactivate_plan
-from app.utils.sse_utils import push_progress, push_final, push_error
+from app.utils.sse_utils import push_final, push_error
 from loguru import logger
 
 
@@ -94,11 +94,12 @@ def synthesize_node(state: PlanState) -> dict:
         })
         logger.info(f"Plan generated for user {user_id}")
 
+        return {"final_plan": plan}
+
     except Exception as e:
         logger.error(f"Plan synthesis error: {e}")
         push_error(state["session_id"], str(e))
-
-    return {"final_plan": plan}
+        return {"final_plan": {}}
 
 
 plan_graph = build_plan_graph()
