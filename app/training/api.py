@@ -4,8 +4,7 @@ import json
 from fastapi import APIRouter
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
-from app.data.training_log import get_active_plan, create_training_log, get_training_logs, get_log_by_id
-from app.data.user_profile import get_profile, update_profile
+from app.data.training_log import get_active_plan
 from app.training.graph import training_graph
 from app.training.state import TrainingState
 from app.utils.sse_utils import SessionManager
@@ -50,7 +49,6 @@ async def get_today_training(user_id: str):
 @router.post("/log")
 async def log_set(req: LogSetRequest):
     # 追加单组记录到训练会话
-    session_key = f"training_{req.session_id}"
     logger.info(f"Set logged: {req.exercise_id} set {req.set_number}: {req.reps} x {req.weight_kg}kg @ RPE {req.rpe}")
     return {"ok": True, "set": req.model_dump()}
 

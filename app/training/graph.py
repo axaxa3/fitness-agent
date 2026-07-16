@@ -40,6 +40,7 @@ def adjust_node(state: TrainingState) -> dict:
     )}
 
 def review_node(state: TrainingState) -> dict:
+    summary = {}
     try:
         summary = synthesize_review(
             state["progress_report"], state["fatigue_report"],
@@ -49,6 +50,7 @@ def review_node(state: TrainingState) -> dict:
     except Exception as e:
         logger.error(f"Review error: {e}")
         push_error(state["session_id"], str(e))
+        return {"final_summary": summary}
     return {"final_summary": summary}
 
 
