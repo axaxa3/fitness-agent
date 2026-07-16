@@ -1,0 +1,16 @@
+根据以下对话，生成结构化记忆摘要。
+
+## 对话内容
+{conversation}
+
+## 已有记忆（用于去重）
+{existing_memories}
+
+## 输出格式
+返回JSON数组，每条记忆包含：
+- bucket: "training_feedback" | "injury_attention" | "user_preferences" | "plan_iterations" | "qa_patterns"
+- content: 简洁的记忆内容（1-2句话）
+- importance: 重要性评分 1-10
+
+只返回JSON数组，不要其他内容。
+如果与已有记忆高度重复（相似度>90%），跳过该项。
