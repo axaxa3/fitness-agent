@@ -1,4 +1,12 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass
+
+
+def _safe_int(value, default: int) -> int:
+    """Convert value to int, returning default on failure."""
+    try:
+        return int(value)
+    except (ValueError, TypeError):
+        return default
 
 
 @dataclass
@@ -20,7 +28,7 @@ class LLMConfig:
             base_url=os.getenv("DASHSCOPE_BASE_URL", cls.base_url),
             model=os.getenv("LLM_MODEL", cls.model),
             embedding_model=os.getenv("EMBEDDING_MODEL", cls.embedding_model),
-            embedding_dim=int(os.getenv("EMBEDDING_DIM", "1024")),
+            embedding_dim=_safe_int(os.getenv("EMBEDDING_DIM"), 1024),
         )
 
 
@@ -52,5 +60,5 @@ class MilvusConfig:
         load_dotenv()
         return cls(
             host=os.getenv("MILVUS_HOST", cls.host),
-            port=int(os.getenv("MILVUS_PORT", "19530")),
+            port=_safe_int(os.getenv("MILVUS_PORT"), 19530),
         )
