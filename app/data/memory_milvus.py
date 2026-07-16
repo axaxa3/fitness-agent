@@ -60,6 +60,10 @@ class MemoryVectorStore:
         )
         logger.info(f"Memory vector store ready: {COLLECTION}")
 
+    def connect(self):
+        self._ensure_collection()
+        logger.info("MemoryVectorStore connected")
+
     @property
     def col(self):
         self._ensure_collection()
