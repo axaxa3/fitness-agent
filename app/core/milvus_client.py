@@ -26,6 +26,7 @@ class MilvusManager:
             logger.info("Milvus connection closed")
 
     def has_collection(self, name: str) -> bool:
+        self.connect()
         return utility.has_collection(name)
 
     def get_collection(self, name: str) -> Collection:
@@ -36,6 +37,7 @@ class MilvusManager:
     def create_collection_if_not_exists(
         self, name: str, schema, index_params
     ) -> Collection:
+        self.connect()
         if not self.has_collection(name):
             col = Collection(name, schema=schema)
             col.create_index("vector", index_params)
